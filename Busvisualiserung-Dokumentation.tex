@@ -1,0 +1,72 @@
+\documentclass[11pt,oneside,a4paper]{scrreprt}
+
+\usepackage[ngerman]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[babel,german=quotes]{csquotes}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{color}
+\usepackage{palatino}
+\usepackage{float}
+\usepackage{subfigure} 
+\usepackage{tikz}
+
+\begin{document}
+
+% Deckplatt
+\begin{titlepage}
+\centering
+\includegraphics{res/logo}\par\vspace{2cm}
+{\scshape\LARGE Hochschule für Technik und Wirtschaft \par}
+\vspace{1cm}
+{\scshape\Large Projektarrbeit\par}
+\vspace{3cm}
+{\huge\bfseries Visualisierung  und Auswertung von Positionsdaten der Omnibusse der BVG\par}
+\vspace{1.5cm}
+{\Large Technik mobiler Systeme\par}
+{\Large Ausgewählte Kapitel mobiler Anwendungen\par}
+\vspace{2cm}
+{\Large\itshape Pascal Dettmers (551733)\par}
+{\Large\itshape Stefan Neuberger (553849)\par}
+{\Large\itshape Tobias Ullerich (553746)\par}
+\vfill
+
+{\large \today\par}
+\end{titlepage}
+
+% Abbildungs- und Tabellenverzeichnis
+\tableofcontents
+
+\listoffigures
+\begingroup
+\let\clearpage\relax
+\listoftables
+\endgroup
+
+% Inhalt
+\chapter{Dokumentengeschichte}
+
+\chapter{Problemstellung}
+\section{Ist-Zustand}
+\section{Ziel}
+
+\chapter{Aufgabenstellung}
+
+\chapter{Archtiketur}
+\section{Überblick}
+
+\section{Schnittstellendefinition}
+
+\section{genutzte Komponenten}
+
+\chapter{Nutzung}
+\section{Code}
+\section{Deployment / Runtime}
+
+
+\chapter{Vorschläge / Ausblick}
+
+\end{document}
