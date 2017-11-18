@@ -1,0 +1,9 @@
+# Ignore tex files
+
+*.aux
+*.lof
+*.lot
+*.log
+*.synctex.gz
+*.toc
+
