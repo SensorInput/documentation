@@ -13,8 +13,13 @@
 \usepackage{float}
 \usepackage{subfigure} 
 \usepackage{tikz}
+\usepackage{acronym}
+
+\def\code#1{\texttt{#1}}
 
 \begin{document}
+
+\pagenumbering{gobble}
 
 % Deckplatt
 \begin{titlepage}
@@ -46,6 +51,17 @@
 \listoftables
 \endgroup
 
+\pagenumbering{Roman}
+
+% Abkürzungsverzeichnis
+\chapter*{Abkürzungsverzeichnis}
+\begin{acronym}[RBL]
+	\acro{RBL}{rechnerbasiertes Leitsystem}
+\end{acronym}
+
+\newpage
+\pagenumbering{arabic}
+
 % Inhalt
 \chapter{Dokumentengeschichte}
 \input{Dokumentengeschichte.tex}
@@ -66,11 +82,7 @@ Zu entwickelnde Komponenten:
 \end{itemize}
 
 \chapter{Archtiketur}
-\section{Überblick}
-
-\section{Schnittstellendefinition}
-
-\section{genutzte Komponenten}
+\input{Architektur.tex}
 
 \chapter{Nutzung}
 \section{Code}
