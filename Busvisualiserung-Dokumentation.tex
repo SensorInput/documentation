@@ -57,6 +57,7 @@
 \chapter*{Abkürzungsverzeichnis}
 \begin{acronym}[RBL]
 	\acro{RBL}{rechnerbasiertes Leitsystem}
+	\acro{OSM}{Open Street Map}
 \end{acronym}
 
 \newpage
@@ -72,8 +73,7 @@
 \input{Dokumentengeschichte.tex}
 
 \chapter{Problemstellung}
-\section{Ist-Zustand}
-\section{Ziel}
+\input{Problemstellung.tex}
 
 \chapter{Aufgabenstellung}
 Das zu entwickelnde System ist eine Komponente, die einem Busfahrer Informationen über die Busse einer Buslinie zur Verfügung stellen soll. Dabei wird die Komponente den zeitlichen Abstand zum vorherigen und nachfolgenden Bus einer Linie visualisieren. Der eigene Bus wird durch eine Fahrtennummer im Vorfeld festgelegt. Die Visualisierung geschieht durch eine Android Applikation. Für die Echtzeitdaten der Busse steht eine interne Datenschnittstelle der Berliner Verkehrsbetriebe (BVG) zur Verfügung.
@@ -90,10 +90,11 @@ Zu entwickelnde Komponenten:
 \input{Architektur.tex}
 
 \chapter{Nutzung}
-\section{Code}
-\section{Deployment / Runtime}
+\input{Nutzung.tex}
 
 
 \chapter{Vorschläge / Ausblick}
+
+\chapter{Literaturverzeichnis}
 
 \end{document}
