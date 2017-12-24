@@ -1,0 +1,546 @@
+\section{Rest API Schnittstellendefinition}
+Der Server für die Datenverwaltung basiert auf einer Rest API. Im folgenden Abschnitt werden alle möglichen Request zu Resourcen allgemein und mithilfe eines Beispiels echter Daten beschrieben. Während der Projektarbeit besteht die Möglichkeit, die API über den Server \url{http://bus.f4.htw-berlin.de:4545} aus dem HTW-Berlin Netz zu nutzen.
+% ##########    GET  /api/v1/route/<ref>    ###########
+\subsection{Request für Routen einer Linie}
+Anfrage aller Routen einer Linie (Beispiel Buslinie). Eine Linie hat mehrere Routen.
+
+\subsubsection{HTTP-Method}
+GET
+
+\subsubsection{Resource}
+/api/v1/route/\textless ref\textgreater
+
+\subsubsection{Parameters}
+\begin{itemize}
+	\item ref: Liniennummer
+\end{itemize}
+
+\subsubsection{Response}
+\begin{lstlisting}
+[ {
+  "id" : <id>,
+  "osmId" : "relation/<osmId>",
+  "ref" : "<line number>",
+  "name" : "<description of the route>",
+  "type" : "<transport type>",
+  "network" : "<full name of network>",
+  "operator" : "<full name of operator>",
+  "from" : "<name of start station>",
+  "to" : "<name of end station>",
+  "routeType" : "<MULTILINE | LINE>"
+} ]
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 200: Request erfolgreich
+	\item 404: Keine Routen gefunden
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+GET \url{http://domain.com/api/v1/route/M11}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+[ {
+  "id" : 217,
+  "osmId" : "relation/2088816",
+  "ref" : "M11",
+  "name" : "Buslinie M11: S Schöneweide => U Dahlem Dorf",
+  "type" : "bus",
+  "network" : "Verkehrsverbund Berlin-Brandenburg",
+  "operator" : "Berliner Verkehrsbetriebe",
+  "from" : "S Schöneweide",
+  "to" : "U Dahlem Dorf",
+  "routeType" : "MULTILINE"
+}, {
+  "id" : 218,
+  "osmId" : "relation/2088817",
+  "ref" : "M11",
+  "name" : "Buslinie M11: U Dahlem Dorf => S Schöneweide",
+  "type" : "bus",
+  "network" : "Verkehrsverbund Berlin-Brandenburg",
+  "operator" : "Berliner Verkehrsbetriebe",
+  "from" : "U Dahlem Dorf",
+  "to" : "S Schöneweide",
+  "routeType" : "MULTILINE"
+} ]
+\end{lstlisting}
+
+
+% ##########    GET  /api/v1/route/geo/<ref>    ###########
+\subsection{Request für GeoJson einer Route mit ID}
+Anfrage einer Route per Id. Das Format der Response ist GeoJson Format.
+
+\subsubsection{HTTP-Method}
+GET
+
+\subsubsection{Resource}
+/api/v1/route/geo/\textless id\textgreater
+
+\subsubsection{Parameters}
+\begin{itemize}
+	\item id: Route ID
+\end{itemize}
+
+\subsubsection{Response}
+\begin{lstlisting}
+{
+  "type": "Feature",
+  "properties": {
+    "ref": "<id>",
+    "name": "<description of the route>",
+    "@id": "relation/<osmId>"
+    "from": "<name of start station>",
+    "to": "<name of end station>",
+    "type": "<transport type>",
+    "operator": "<full name of operator>",
+    "network": "<full name of network>"
+  },
+  "geometry": {
+    "type": "<MultiLineString | LineString>",
+    "coordinates":[]
+  }
+}
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 200: Request erfolgreich
+	\item 404: Keine Route gefunden
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+GET \url{http://domain.com/api/v1/route/geo/67}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+{
+  "type": "Feature",
+  "properties": {
+    "ref": "67",
+    "name": "Straßenbahnlinie 67: Krankenhaus Köpenick => S Schöneweide",
+    "from": "Krankenhaus Köpenick",
+    "@id": "relation/2084473",
+    "to": "S Schöneweide",
+    "type": "tram",
+    "operator": "Berliner Verkehrsbetriebe",
+    "network": "Verkehrsverbund Berlin-Brandenburg"
+  },
+  "geometry": {
+    "type": "MultiLineString",
+    "coordinates": [
+      [
+        [
+          13.5939995,
+          52.4385062
+        ],
+        [
+          13.5939794,
+          52.438533
+        ], ....
+    ]
+  }
+}
+\end{lstlisting}
+
+
+% ##########    POST  /api/v1/route    ###########
+\subsection{Hinzufügen einer Route}
+Fügt eine Route (oder mehrere) hinzu. Der Payload muss im GeoJson Format sein.
+
+\subsubsection{HTTP-Method}
+POST
+
+\subsubsection{Resource}
+/api/v1/route
+
+\subsubsection{Payload}
+\begin{lstlisting}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/<osmId>",
+        "name": "<description of the route>",
+        "network": "<full name of network>",
+        "operator": "<full name of operator>",
+        "from": "<name of start station>",
+        "to": "<name of end station>",
+        "ref": "<id>",
+        "route": "<transport type>",
+        "type": "route",
+      },
+      "geometry": {
+        "type": "<MultiLineString | LineString>",
+        "coordinates": [
+        ]
+     }
+  }
+}
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 201: Resource erstellt
+	\item 500: Bad payload
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+POST \url{http://domain.com/api/v1/route}
+
+\begin{lstlisting}
+{
+  "type": "Feature",
+  "properties": {
+    "ref": "67",
+    "name": "Straßenbahnlinie 67: Krankenhaus Köpenick => S Schöneweide",
+    "from": "Krankenhaus Köpenick",
+    "@id": "relation/2084473",
+    "to": "S Schöneweide",
+    "type": "tram",
+    "operator": "Berliner Verkehrsbetriebe",
+    "network": "Verkehrsverbund Berlin-Brandenburg"
+  },
+  "geometry": {
+    "type": "MultiLineString",
+    "coordinates": [
+       [
+         [
+         13.5939995,
+         52.4385062
+       ],
+       [
+         13.5939794,
+         52.438533
+      ], ....
+    ]
+  }
+}
+\end{lstlisting}
+
+
+% ##########    GET  /api/v1/journey    ###########
+\subsection{Request für eine Journey}
+Anfrage für Messwerte einer Fahrt (Journey) auf einer Route. Die Antwort enthält die bereits geglätteten Koordinaten.
+
+\subsubsection{HTTP-Method}
+GET
+
+\subsubsection{Resource}
+/api/v1/journey/\textless id\textgreater
+
+\subsubsection{Parameters}
+\begin{itemize}
+	\item id: Journey ID
+\end{itemize}
+
+\subsubsection{Response}
+\begin{lstlisting}
+{
+  "id": <journeyId>,
+  "routeId": <routeId>,
+  "startTime": <timeStamp>,
+  "endTime": <timeStamp>,
+  "points": [
+    {
+      "id": <id>,
+      "journeyId": <journeyId>,
+      "time": <timeStamp>,
+      "lngLat": {
+        "lng": <longitude>,
+        "lat": <latidute>
+      }
+    }, ...
+  ]
+}
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 200: Anfrage erfolgreich
+	\item 404: Keine Journey gefunden
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+GET \url{http://domain.com/api/v1/journey/2}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+{
+  "id": 2,
+  "routeId": 67,
+  "startTime": 1513596120000,
+  "endTime": 1513597500000,
+  "points": [
+    {
+      "id": 93,
+      "journeyId": 2,
+      "time": 1513596185100,
+      "lngLat": {
+        "lng": 13.5916396,
+        "lat": 52.4390415
+      }
+    }, ...
+  ]
+}
+\end{lstlisting}
+
+
+% ##########    POST  /api/v1/journey    ###########
+\subsection{Hinzufügen einer neuen Journey}
+Erstellt eine neue Journey.
+
+\subsubsection{HTTP-Method}
+POST
+
+\subsubsection{Resource}
+/api/v1/journery
+
+\subsubsection{Payload}
+\begin{lstlisting}
+{
+  "routeId" : <routeId>,
+  "startTime": <timestamp>,
+  "endTime": <timestamp>
+}
+\end{lstlisting}
+
+
+\subsubsection{Response}
+\begin{lstlisting}
+<id>
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 201: Resource erstellt
+	\item 500: Bad payload
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+POST \url{http://domain.com/api/v1/journey}
+
+\begin{lstlisting}
+{
+  "routeId" : 67,
+  "startTime": 1513596120000,
+  "endTime": 1513597500000
+}
+\end{lstlisting}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+7
+\end{lstlisting}
+
+
+% ##########    POST  /api/v1/journey/position    ###########
+\subsection{Hinzufügen einer Messposition für die Zeitmessung}
+Fügt einen neuen Messpunkt für eine Route einer Journey hinzu. Eine Journey beschreibt eine konkrete Fahrt auf einer konkreten Route.
+
+\subsubsection{HTTP-Method}
+POST
+
+\subsubsection{Resource}
+/api/v1/position
+
+\subsubsection{Payload}
+\begin{lstlisting}
+{
+  "journeyId" : <journeyId>,
+  "time": <timestamp>,
+  "lngLat" : {
+    "lng": <longitude>,
+    "lat": <latitude>
+  }
+}
+\end{lstlisting}
+
+
+\subsubsection{Response}
+\begin{lstlisting}
+<id>
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 201: Resource erstellt
+	\item 500: Bad payload
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+POST \url{http://domain.com/api/v1/position}
+
+\begin{lstlisting}
+{
+  "time":1467888902,
+  "journeyId": 3,
+  "lngLat": {
+    "lat":13.43546,
+    "lng":52.32332	
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+251
+\end{lstlisting}
+
+
+% ##########    GET  /api/v1/vehicle    ###########
+\subsection{Request für ein Fahrzeug}
+Anfrage für ein Fahrzeug. Die Antwort enthält Geo Daten und Routeninformationen.
+
+\subsubsection{HTTP-Method}
+GET
+
+\subsubsection{Resource}
+/api/v1/vehicle/\textless id\textgreater
+
+\subsubsection{Parameters}
+\begin{itemize}
+	\item id: Unique Id des Fahrzeuges (Devices)
+\end{itemize}
+
+\subsubsection{Response}
+\begin{lstlisting}
+{
+  "id": <id>,
+  "ref": "<uniqueId>",
+  "routeId": <routeId>,
+  "time": <timeStamp>,
+  "position": {
+    "lng": <longitude>,
+    "lat": <latitude>
+  }
+}
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 200: Anfrage erfolgreich
+	\item 404: Kein Fahrzeug gefunden
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+GET \url{http://domain.com/api/v1/journey/2}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+{
+  "id": 1,
+  "ref": "636c81cc2361acd7",
+  "routeId": 67,
+  "time": 1513596185100,
+  "position": {
+    "lng": 52.3453,
+    "lat": 13.53234
+  }
+}
+\end{lstlisting}
+
+
+% ##########    POST  /api/v1/journey/position    ###########
+\subsection{Hinzufügen eines Fahrzeuges}
+Fügt ein neues Fahrzeug der Datenbank hinzu.
+
+\subsubsection{HTTP-Method}
+POST
+
+\subsubsection{Resource}
+/api/v1/vehicle
+
+\subsubsection{Payload}
+\begin{lstlisting}
+{
+  "ref": "<uniqueId>",
+  "routeId": <routeId>,
+  "time": <timeStamp>,
+  "position": {
+    "lng": <longitude>,
+    "lat": <latitude>
+  }
+}
+\end{lstlisting}
+
+
+\subsubsection{Response}
+\begin{lstlisting}
+<id>
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 201: Resource erstellt
+	\item 500: Bad payload
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+POST \url{http://domain.com/api/v1/position}
+
+\begin{lstlisting}
+{
+  "ref": "636c81cc2361acd7",
+  "routeId": 67,
+  "time": 1513596185100,
+  "position": {
+    "lng": 52.3453,
+    "lat": 13.53234
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+2
+\end{lstlisting}
+
+
+% ##########    PUT  /api/v1/journey/position    ###########
+\subsection{Update eines Fahrzeuges}
+Aktualisiert die Daten ein neues Fahrzeuges int der Datenbank hinzu.
+
+\subsubsection{HTTP-Method}
+PUT
+
+\subsubsection{Resource}
+/api/v1/vehicle
+
+\subsubsection{Payload}
+\begin{lstlisting}
+{
+  "ref": "<uniqueId>",
+  "routeId": <routeId>,
+  "time": <timeStamp>,
+  "position": {
+    "lng": <longitude>,
+    "lat": <latitude>
+  }
+}
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 201: Resource erstellt
+	\item 500: Bad payload
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+POST \url{http://domain.com/api/v1/position}
+
+\begin{lstlisting}
+{
+  "ref": "636c81cc2361acd7",
+  "routeId": 67,
+  "time": 1513596185100,
+  "position": {
+    "lng": 52.3453,
+    "lat": 13.53234
+  }
+}
+\end{lstlisting}
+
