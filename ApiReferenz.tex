@@ -544,3 +544,59 @@ POST \url{http://domain.com/api/v1/position}
 }
 \end{lstlisting}
 
+
+% ##########    GET  /api/v1/vehicle/id/list    ###########
+\subsection{Request für ein Fahrzeug}
+Anfrage aller Fahrzeuge, die mit einem Fahrzeug in Verbindung stehen. Das bedeutet, die Antwort enthält alle Fahrzeuge auf der Route des angefragten Fahrzeuges.
+
+\subsubsection{HTTP-Method}
+GET
+
+\subsubsection{Resource}
+/api/v1/vehicle/\textless id\textgreater/list
+
+\subsubsection{Parameters}
+\begin{itemize}
+	\item id: Unique Id des Fahrzeuges (Devices)
+\end{itemize}
+
+\subsubsection{Response}
+\begin{lstlisting}
+[ {
+  "ref" : "<devideId>",
+  "geoLngLat" : {
+    "lng" : <longitude>,
+    "lat" : <latitude>
+  },
+  "relativeDistance" : <distanceMetersToRequestedVehicle>
+} ]
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 200: Anfrage erfolgreich
+	\item 404: Kein Fahrzeug gefunden
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+GET \url{http://domain.com/api/v1/vehicle/636c81cc2361acd7/list}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+[ {
+  "ref" : "636c81cc2361acd7",
+  "geoLngLat" : {
+    "lng" : 13.5395005,
+    "lat" : 52.4575977
+  },
+  "relativeDistance" : 0.0
+}, {
+  "ref" : "4dcghc4zzc6cghcf",
+  "geoLngLat" : {
+    "lng" : 13.5716218,
+    "lat" : 52.4511964
+  },
+  "relativeDistance" : 2504.827656693912
+} ]
+\end{lstlisting}
+
