@@ -33,3 +33,13 @@ Bestandteile des Systems beschreiben (Server, App, ...)
 \input{ApiReferenz.tex}
 
 \section{Datenbankschema Server}
+F\"ur die Persistierung der Daten des Servers wurde eine relationale Datenbank gew\"ahlt. Speziell wird eine MySQL Datenbank gew\"ahlt. Um auf die Datenbank aus Java zuzugreifen, wird der Java Database Connector (JDBC) verwendet.
+
+In der Datenbank werden Daten der Route und Geometrien aus OSM gespeichert. Daf\"ur gitb es die Tabellen \code{Route}, \code{MultiLineStirng} und \code{LineString}. Die Relation \code{Route} enth\"alt Informationen \"uber Liniennummern (\code{rel}), Start- und Zielhaltestelle (\code{from}, \code{to}). Desweiteren sind Informationen \"uber das Verkehrsunternehmen (\code{operator}, Biespiel: BVG) und den Verkehrsverbund (\code{network}, Beispiel: VBB) vorhanden. Die Eigenschaft \code{type} entscheidet \"uber den Typ der Geometrie der Route. Die eigentliche Information \"uber die Geometrie befindet sich als String in der Tabelle \code{MultiLineString} oder \code{LineString}. Ein solcher MultiLineString kann beispielsweise wie folgt ausehen: MultiLineString((13.6920278 52.4516269, 13.6923877 52.4515733, 13.6926666 52.4515393, 13.6929464 52.451526, ...)).
+
+Um Aussagen \"uber die Geschwindigkeit von Fahrzeugen auf einer Route treffen zu k\"onnen, wurden im Vorfeld Testfahrten gemacht. Die gesammelten Daten w\"ahrend dieser Testfahrten sind in den Tabellen \code{Journey} und \code{MeasurePoint} persistiert. Die Tabelle \code{Journey} beschreibt eine spezielle Fahrt zu einer Uhrzeit auf einer Route. Die Messwerte, also die GPS Position eines Fahrzeugss und Zeitstempel, werden zu einer Fahrt in der Relation \code{MeasurePoint} gespeichert. Bei den GPS Daten handelt es sich um die ungegl\"atteten Daten, das hei{\ss}t also, dass die GPS Daten nicht zwingend auf der Route befinden m\"ussen.
+
+In der Tabelle \code{Vehicle} werden die aktuellen Informationen zu den Fahrzeugen gespeichert. Daf\"ur enth\"alt die Tabelle Informationen zu GPS Position (nicht gegl\"attet), ein Zeitstempel und die Route eines Fahrzeuges. Jedes Fahrzeug wird \"uber einen Unique Identifier identifiziert (\code{ref}).
+
+Um diese Fahrzeugdaten historisch zu persistieren gibt es zus\"atzlich  zu \code{Vehicle} die Relation \code{VehicleHistory}. In dieser Tabelle existiert die gleiche Struktur wie \code{Vehicle}. Der Prim\"arschl\"ussel der Relation \code{VehicleHistroy} ist ein Tupel aus \code{ref} und \code{time}.
+
