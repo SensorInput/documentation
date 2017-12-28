@@ -41,5 +41,13 @@ Um Aussagen \"uber die Geschwindigkeit von Fahrzeugen auf einer Route treffen zu
 
 In der Tabelle \code{Vehicle} werden die aktuellen Informationen zu den Fahrzeugen gespeichert. Daf\"ur enth\"alt die Tabelle Informationen zu GPS Position (gegl\"attet), ein Zeitstempel und die Route eines Fahrzeuges. Jedes Fahrzeug wird \"uber einen Unique Identifier identifiziert (\code{ref}).
 
-Um diese Fahrzeugdaten historisch zu persistieren gibt es zus\"atzlich  zu \code{Vehicle} die Relation \code{VehicleHistory}. In dieser Tabelle existiert die gleiche Struktur wie \code{Vehicle}. Der Prim\"arschl\"ussel der Relation \code{VehicleHistroy} ist ein Tupel aus \code{ref} und \code{time}.
+Um diese Fahrzeugdaten historisch zu persistieren gibt es zus\"atzlich  zu \code{Vehicle} die Relation \code{VehicleHistory}. In dieser Tabelle existiert die gleiche Struktur wie \code{Vehicle}. Der Schl\"ussel der Relation \code{VehicleHistroy} ist ein Tupel aus \code{ref} und \code{time}.
 
+Abbildung \ref{img:db-server} visualisiert die erstellte Datenbankstruktur mit den Relationen und deren Beziehungen für den Server.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{res/Server-DB.png}
+	\caption{Datenbank Schema Server}
+	\label{img:db-server}
+\end{figure}
