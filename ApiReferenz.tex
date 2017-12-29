@@ -345,7 +345,7 @@ Fügt einen neuen Messpunkt für eine Route einer Journey hinzu. Eine Journey besc
 POST
 
 \subsubsection{Resource}
-/api/v1/position
+/api/v1/journey/position
 
 \subsubsection{Payload}
 \begin{lstlisting}
@@ -372,7 +372,7 @@ POST
 \end{itemize}
 
 \subsubsection{Beispiel Request}
-POST \url{http://domain.com/api/v1/position}
+POST \url{http://domain.com/api/v1/journey/position}
 
 \begin{lstlisting}
 {
@@ -416,7 +416,8 @@ GET
   "position": {
     "lng": <longitude>,
     "lat": <latitude>
-  }
+  },
+  "pastedDistance" : <meter>
 }
 \end{lstlisting}
 
@@ -439,7 +440,8 @@ GET \url{http://domain.com/api/v1/journey/2}
   "position": {
     "lng": 52.3453,
     "lat": 13.53234
-  }
+  },
+  "pastedDistance" : 5592.54969445254
 }
 \end{lstlisting}
 
@@ -530,7 +532,7 @@ PUT
 \end{itemize}
 
 \subsubsection{Beispiel Request}
-POST \url{http://domain.com/api/v1/position}
+PU \url{http://domain.com/api/v1/position}
 
 \begin{lstlisting}
 {
