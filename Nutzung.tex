@@ -4,6 +4,21 @@
 \subsection{Bibliotheken}
 
 \section{Funktionsweise}
-Wie funktioniert die Berechnung.
+Um die zeitlichen Abstand von zwei Fahrzeugen auf einer Route zu ermitteln, sind vorab mehrere Schritte notwendig. Grundlage der Berechnung sind die GPS Koordinaten der Fahrzeuge und der Routenverlauf. Zudem werden sogenannte Messfahrten auf der Route benötigt, um die zeitliche Entfernung näherungsweise zu bestimmten.
+ 
+Als erstes müssen alle Fahrzeuge, die auf der gleichen Route fahren aus der Datenbank ermittelt werden. Bei den GPS Daten zu den einzelnen Fahrzeugen handelt es sich um bereits bearbeitete GPS Koordinaten. Die Koordinaten werden vorab im PUT Request (\ref{sub:vehicle:put}) bearbeitet, das heißt die ungenaue Position des Handy wird auf dichtesten Punkt der Route verschoben. Mit diesen Koordinaten wird anschließend für jedes Fahrzeug die Entfernung zum Startpunkt der Route berechnet.
+
+Für die Berechnung der Entfernung zwischen zwei Koordinaten auf der Route (LineString), wird jeweils die Abstand zwischen zwei Punkten des LineStrings ermittelt und aufsummiert. Für diese Berechnung wird die Haversine Formel verwendet. % TODO Quelle + Recherche https://www.htmlgoodies.com/beyond/javascript/calculate-the-distance-between-two-points-in-your-web-apps.html
+ Dieses Verfahren ist nötig, da die zwei Punkte mit der Route im seltensten Fall eine Gerade bilden (siehe Abbildung \ref{img:route}). Als nächstes wird der Abstand zwischen den Fahrzeugen in Metern bestimmt. Für diese Berechnung wird ein Fahrzeug ausgewählt (siehe \ref{sub:vehicle:list}), woraufhin die Entfernungen zu den anderen Fahrzeugen ermittelt wird.
+ 
+ Der letzte Schritt ist die Berechnung des zeitlichen Abstandes. Hierfür sind die Messfahren notwendig. Bei einer Messfahrt wurde im Vorfeld die komplette Route abgefahren und zu regelmäßigen Zeitpunkten die GSP Position gemessen. Diese Position wird mit Uhrzeit zusammen in der Datenbank persistiert. Somit ist es möglich zu bestimmen, wie lange ein Fahrzeug von Position A zu Position B braucht. Im besten Fall existieren mehrere Messfahrten zu einer Route, damit die Aussage genauer wird.
+Um nun die zeitliche Entfernung von Fahrzeug A zu Fahrzeug B zu ermitteln, wird der dichteste Punkt von einer Messfahrt zum Fahrzeug A ermittelt. Das gleiche Prinzip wird auf das Fahrzeug B angewandt. Anschließend wird die Zeitdifferenz gebildet. Das wird mit jeder Messfahrt gemacht und anschließend wird der Mittelwert aller Zeitdifferenzen ermittelt.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=8cm]{res/Route.png}
+	\caption{Beispiel für Route mit 3 Fahrzeugen}
+	\label{img:route}
+\end{figure}
 
 \section{Deployment / Runtime}

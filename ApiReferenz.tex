@@ -446,7 +446,7 @@ GET \url{http://domain.com/api/v1/journey/2}
 \end{lstlisting}
 
 
-% ##########    POST  /api/v1/journey/position    ###########
+% ##########    POST  /api/v1/vehicle    ###########
 \subsection{Hinzufügen eines Fahrzeuges}
 Fügt ein neues Fahrzeug der Datenbank hinzu.
 
@@ -502,8 +502,8 @@ POST \url{http://domain.com/api/v1/position}
 \end{lstlisting}
 
 
-% ##########    PUT  /api/v1/journey/position    ###########
-\subsection{Update eines Fahrzeuges}
+% ##########    PUT  /api/v1/vehicle    ###########
+\subsection{Update eines Fahrzeuges} \label{sub:vehicle:put}
 Aktualisiert die Daten ein neues Fahrzeuges int der Datenbank hinzu.
 
 \subsubsection{HTTP-Method}
@@ -548,7 +548,7 @@ PU \url{http://domain.com/api/v1/position}
 
 
 % ##########    GET  /api/v1/vehicle/id/list    ###########
-\subsection{Request für ein Fahrzeug}
+\subsection{Request für ein Fahrzeug} \label{sub:vehicle:list}
 Anfrage aller Fahrzeuge, die mit einem Fahrzeug in Verbindung stehen. Das bedeutet, die Antwort enthält alle Fahrzeuge auf der Route des angefragten Fahrzeuges.
 
 \subsubsection{HTTP-Method}
