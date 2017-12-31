@@ -107,6 +107,7 @@ GET
 \subsubsection{HTTP status codes}
 \begin{itemize}
 	\item 200: Request erfolgreich
+	\item 400: Ungültiger Parameter
 	\item 404: Keine Route gefunden
 \end{itemize}
 
@@ -261,6 +262,7 @@ GET
 \subsubsection{HTTP status codes}
 \begin{itemize}
 	\item 200: Anfrage erfolgreich
+	\item 400: Ungültiger Parameter
 	\item 404: Keine Journey gefunden
 \end{itemize}
 
@@ -317,7 +319,7 @@ POST
 \subsubsection{HTTP status codes}
 \begin{itemize}
 	\item 201: Resource erstellt
-	\item 500: Bad payload
+	\item 400: Bad payload
 \end{itemize}
 
 \subsubsection{Beispiel Request}
@@ -368,7 +370,7 @@ POST
 \subsubsection{HTTP status codes}
 \begin{itemize}
 	\item 201: Resource erstellt
-	\item 500: Bad payload
+	\item 400: Bad payload
 \end{itemize}
 
 \subsubsection{Beispiel Request}
@@ -478,11 +480,11 @@ POST
 \subsubsection{HTTP status codes}
 \begin{itemize}
 	\item 201: Resource erstellt
-	\item 500: Bad payload
+	\item 400: Bad payload
 \end{itemize}
 
 \subsubsection{Beispiel Request}
-POST \url{http://domain.com/api/v1/position}
+POST \url{http://domain.com/api/v1/vehicle}
 
 \begin{lstlisting}
 {
@@ -528,11 +530,11 @@ PUT
 \subsubsection{HTTP status codes}
 \begin{itemize}
 	\item 201: Resource erstellt
-	\item 500: Bad payload
+	\item 400: Bad payload
 \end{itemize}
 
 \subsubsection{Beispiel Request}
-PU \url{http://domain.com/api/v1/position}
+PUT \url{http://domain.com/api/v1/vehicle}
 
 \begin{lstlisting}
 {
