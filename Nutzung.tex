@@ -1,10 +1,24 @@
 \section{Code}
 \subsection{Programmiersprache}
+Um die optimale Programmiersprache für das Projekt find zu, spielen mehrere Faktoren eine Rolle. Zum einen muss die Zielplattform berücksichtig werden, aber auch die eigene Fähigkeit, mit der Sprache und den damit verbunden Bibliothek umzugehen. Im Fall der Android Anwendung, ist Java die Programmiersprache der Wahl. Alternativen währen hier beispielsweise Kotlin. Die Vorteile von Kotlin gegenüber Java überliegen klar, da Kotlin sicherer und moderner ist. % https://developer.android.com/kotlin/index.html
+Jedoch ist die eigene Erfahrung der Autoren in Java gegenüber Kotlin mehr vorhanden, was schlussendlich die Entscheidung beeinflusst hat.
+
+Für den Server ist die Wahl der Programmiersprachen deutlich umfangreicher. Die eigene einzige Vorgabe ist, das es sich bei dem Server um eine Rest API mit unterliegendem HTTP-Server handeln soll. Bei dem Server wird auf eine Mischung aus Java und Scala gesetzt. Auch hier spielt die Erfahrung eine entscheidende Rolle. Die Mischung aus Scala und Java funktioniert nur deshalb, da Scala Code zu Java Byte Code compiliet wird. Somit ist es möglich, Java Klassen und Methoden einschränkungsfrei in Scala zu nutzen. Die andere Richtung funktioniert nicht einschränkungsfrei. Aus diesem Grund sind die Modellklassen, die Http Handler und Datenbankklassen alle in Java geschrieben. Somit müssen keine Kompromisse zwischen Scala und Java gemacht werden. sämtliche Berechnungen sind in Scala implementiert. Der größte Vorteil von Scala, der auch die Entscheidung beeinflusst hat, ist die funktionale Programmierung, welches sich beim Auswerten von Liste und Arrays als hilfreiches Paradigma darstellt. % http://www.scala-lang.org
 
 \subsection{Bibliotheken}
+% TODO Android Libs
+
+Da der Server eine Rest API sein soll, wird dafür ein entsprechendes Framework benötigt. Für die Programmiersprache Java gibt es zahlreiche Frameworks für die Umsetzung von Rest APIs. In diesem Projekt wurde sich für die Bibliothek Spark in Version 2.7.1 entschieden. %http://sparkjava.com
+Andere Frameworks wie Beispielsweise Spring WebMVC wären für dieses Projekt zu umfangreich gewesen.
+Spark ist ein einfaches Framework um Webservices zu erstellen (vgl. http://sparkjava.com). % TODO
+Im Hintergrund arbeitet für die Http Anfragen ein Jetty HTTP Server der Ecipse Foundation. 
+
+Datenbankanfragen werden in Java mittels der Schnittstelle JDBC gesendet. Als Datenbank kommt ein MySQL Server zum Einsatz. Dementsprechend wird die Bibliothek "`mysql-connector-java'' in der Version 6.0.5 verwendet. Auch wird bewusst auf eine ORM Bibliothek verzichtet, um maximale Kontrolle über die Datenbankstruktur und Abfragen zu haben.
+
+Als Übertragungsformat für den Payload in den HTTP Anfragen, wird JSON als Format gewählt. Für die serverseite Verarbeitung wird die Bibliothek jackson und die Erweiterung geojson-jackson genutzt. Jackson ermöglicht es, JSON Daten direkt auf Java Objekt zu mappen. Dafür sind die Abhängigkeiten jackson-annotations und jackson-databind nötig. Jackson und die dazugehörigen Module werden in Version 2.9.2 verwendet.
 
 \section{Funktionsweise}
-Um die zeitlichen Abstand von zwei Fahrzeugen auf einer Route zu ermitteln, sind vorab mehrere Schritte notwendig. Grundlage der Berechnung sind die GPS Koordinaten der Fahrzeuge und der Routenverlauf. Zudem werden sogenannte Messfahrten auf der Route benötigt, um die zeitliche Entfernung näherungsweise zu bestimmten.
+Um die zeitlichen Abstand von zwei Fahrzeugen auf einer Route zu ermitteln, sind vorab mehrere Schritte notwendig. Grundlage der Berechnung sind die GPS Koordinaten der Fahrzeuge und der Routenverlauf. Zudem werden sogenannte Messfahrten (Journey genannt) auf der Route benötigt, um die zeitliche Entfernung näherungsweise zu bestimmten.
  
 Als erstes müssen alle Fahrzeuge, die auf der gleichen Route fahren aus der Datenbank ermittelt werden. Bei den GPS Daten zu den einzelnen Fahrzeugen handelt es sich um bereits bearbeitete GPS Koordinaten. Die Koordinaten werden vorab im PUT Request (\ref{sub:vehicle:put}) bearbeitet, das heißt die ungenaue Position des Handy wird auf dichtesten Punkt der Route verschoben. Mit diesen Koordinaten wird anschließend für jedes Fahrzeug die Entfernung zum Startpunkt der Route berechnet.
 

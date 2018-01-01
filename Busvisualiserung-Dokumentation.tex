@@ -22,6 +22,12 @@
 
 \def\code#1{\texttt{#1}}
 
+% Table formats
+\usepackage{tabularx}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
 %Listing
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
@@ -69,20 +75,25 @@
 
 % Deckplatt
 \begin{titlepage}
-\centering
-\includegraphics{res/logo}\par\vspace{2cm}
-{\scshape\LARGE Hochschule für Technik und Wirtschaft \par}
-\vspace{1cm}
-{\scshape\Large Projektarrbeit\par}
-\vspace{3cm}
-{\huge\bfseries Visualisierung  und Auswertung von Positionsdaten der Omnibusse der BVG\par}
-\vspace{1.5cm}
-{\Large Technik mobiler Systeme\par}
-{\Large Ausgewählte Kapitel mobiler Anwendungen\par}
-\vspace{2cm}
-{\Large\itshape Pascal Dettmers (551733)\par}
-{\Large\itshape Stefan Neuberger (553849)\par}
-{\Large\itshape Tobias Ullerich (553746)\par}
+    \centering
+    \includegraphics{res/logo}\par\vspace{2cm}
+    {\scshape\LARGE Hochschule für Technik und Wirtschaft \par}
+    \vspace{1cm}
+    {\scshape\Large Projektarrbeit\par}
+    \vspace{2.5cm}
+    {\huge\bfseries Erfassung, Auswertung und Visualisierung von routenbasierten Positionsdaten anhand der Omnibusse der BVG\par}
+    \vspace{1.5cm}
+    {\Large Technik mobiler Systeme\par}
+    {\Large Ausgewählte Kapitel mobiler Anwendungen\par}
+    \vspace{2cm}
+    {\Large\itshape Pascal Dettmers (551733)\par}
+    {\Large\itshape Stefan Neuberger (553849)\par}
+    {\Large\itshape Tobias Ullerich (553746)\par}
+    \vspace{1.5cm}
+    Betreuende Dozenten: \\
+    \vspace{0.5cm}
+    Prof. Dr. Alexander Huhn\\
+    Prof. Dr.-Ing. Thomas Schwotzer\\
 \vfill
 
 {\large \today\par}
@@ -101,28 +112,37 @@
 
 % Abkürzungsverzeichnis
 \chapter*{Abkürzungsverzeichnis}
-\begin{acronym}[OSM]
-	\acro{RBL}{rechnerbasiertes Leitsystem}
+\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
+\begin{acronym}[JDBC]
+	\acro{BVG}{Berliner Verkehrsbetriebe}
+	\acro{JDBC}{Java Database Connector}
+	\acro{ORM}{Object Relational Mapping}
 	\acro{OSM}{Open Street Map}
+	\acro{RBL}{rechnerbasiertes Leitsystem}
 \end{acronym}
 
 \newpage
-\pagenumbering{arabic}
 
-% TODO
-% Def: Course
-% Def: Route
-% Def: Line
+\chapter*{Glossar}	
+\addcontentsline{toc}{chapter}{Glossar}
+\begin{description}
+	\item[Linie] ist ein Sammlung von Routen und beschreibt im öffentlichen Nahverkehr in der Regel eine Strecke von A nach B und umgedreht.
+	\item[Journey] ist eine Fahrt auf einer Route, um Zeitmessungen für die Berechnung zu machen.
+	\item[Route] ist ein Begriff, der eine konkrete Strecke von A nach B beschreibt.
+\end{description}	
+\clearpage
+
+\pagenumbering{arabic}
 
 % Inhalt
 \chapter{Dokumentengeschichte}
 \input{Dokumentengeschichte.tex}
 
-\chapter{Problemstellung}
+\chapter{Problemstellung} \label{sec:problem}
 \input{Problemstellung.tex}
 
 \chapter{Aufgabenstellung}
-Das zu entwickelnde System ist eine Komponente, die einem Busfahrer Informationen über die Busse einer Buslinie zur Verfügung stellen soll. Dabei soll das System nicht nur auf Busse beschränkt sein. Denkbar sind hier auch andere Arten von öffentlichen Transportmitteln. Dabei wird die Komponente den zeitlichen Abstand zum vorherigen und nachfolgenden Bus einer Linie visualisieren. Die Visualisierung geschieht durch eine Android Applikation.
+Aus der Problemstellung von Abschnitt \ref{sec:problem} ergeben sich für das Projekt folgende Anforderungen. Das zu entwickelnde System hat die primäre Aufgabe, den zeitlichen Abstand von zwei Objekten auf einer Route zu bestimmen. Im konkreten Anwendungsfall handelt es sich bei diesen Objekten um Omnibusse der Berliner Verkehrsbetriebe. Zu entwickeln ist eine Android Applikation, die die Positionsdaten der Omnibusse erhebt, und Abstand der Objekte in Weg und Zeit visualisiert darstellt. Speziell ist der Abstand zum Vorgänger und Nachfolger von Interesse. Zudem ist eine Persistierung der Daten in eine Datenbank gefordert.
 
 \chapter{Archtiketur}
 \input{Architektur.tex}

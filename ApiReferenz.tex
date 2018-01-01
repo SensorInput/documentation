@@ -1,5 +1,5 @@
 \section{Rest API Schnittstellendefinition}
-Der Server für die Datenverwaltung basiert auf einer Rest API. Im folgenden Abschnitt werden alle möglichen Request zu Resourcen allgemein und mithilfe eines Beispiels echter Daten beschrieben. Während der Projektarbeit besteht die Möglichkeit, die API über den Server \url{http://bus.f4.htw-berlin.de:4545} aus dem HTW-Berlin Netz zu nutzen.
+Der Server für die Datenverwaltung basiert auf einer Rest API. Im folgenden Abschnitt werden alle möglichen Requests zu Ressourcen allgemein und mithilfe eines Beispiels echter Daten beschrieben. Während der Projektarbeit besteht die Möglichkeit, die API über den Server \url{http://bus.f4.htw-berlin.de:4545} aus dem HTW-Berlin Netz zu nutzen.
 % ##########    GET  /api/v1/route/<ref>    ###########
 \subsection{Request für Routen einer Linie}
 Anfrage aller Routen einer Linie (Beispiel Buslinie). Eine Linie hat mehrere Routen.
@@ -512,7 +512,7 @@ Aktualisiert die Daten ein neues Fahrzeuges int der Datenbank hinzu.
 PUT
 
 \subsubsection{Resource}
-/api/v1/vehicle
+/api/v1/vehicle/\textless id\textgreater
 
 \subsubsection{Payload}
 \begin{lstlisting}
@@ -534,7 +534,7 @@ PUT
 \end{itemize}
 
 \subsubsection{Beispiel Request}
-PUT \url{http://domain.com/api/v1/vehicle}
+PUT \url{http://domain.com/api/v1/vehicle/636c81cc2361acd7}
 
 \begin{lstlisting}
 {
