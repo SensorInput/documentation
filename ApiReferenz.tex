@@ -606,3 +606,100 @@ GET \url{http://domain.com/api/v1/vehicle/636c81cc2361acd7/list}
 } ]
 \end{lstlisting}
 
+% ##########    GET  /api/v1/vehicles    ###########
+\subsection{Request für die historischen Daten aller Fahrzeuge} \label{sub:vehicle:list}
+Anfrage aller historischen Fahrzeugdaten.
+
+\subsubsection{HTTP-Method}
+GET
+
+\subsubsection{Resource}
+/api/v1/vehicles
+
+\subsubsection{Response}
+\begin{lstlisting}
+[ {
+  "ref": "<uniqueId>",
+  "routeId": <routeId>,
+  "time": <timeStamp>,
+  "position": {
+    "lng": <longitude>,
+    "lat": <latitude>
+  }
+} ]
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 200: Anfrage erfolgreich
+	\item 404: Kein Fahrzeug gefunden
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+GET \url{http://domain.com/api/v1/vehicles}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+[ {
+  "ref": "636c81cc2361acd7",
+  "routeId": 67,
+  "time": 1513596185100,
+  "position": {
+    "lng": 52.3453,
+    "lat": 13.53234
+  }
+} ]
+\end{lstlisting}
+
+
+% ##########    GET  /api/v1/vehicles/id    ###########
+\subsection{Request für die historischen Daten eines Fahrzeugs} \label{sub:vehicle:list}
+Anfrage aller historischen Fahrzeugdaten.
+
+\subsubsection{HTTP-Method}
+GET
+
+\subsubsection{Resource}
+/api/v1/vehicles/\textless id\textgreater
+
+
+\subsubsection{Parameters}
+\begin{itemize}
+	\item id: Unique Id des Fahrzeuges (Devices)
+\end{itemize}
+
+
+\subsubsection{Response}
+\begin{lstlisting}
+[ {
+  "ref": "<uniqueId>",
+  "routeId": <routeId>,
+  "time": <timeStamp>,
+  "position": {
+    "lng": <longitude>,
+    "lat": <latitude>
+  }
+} ]
+\end{lstlisting}
+
+\subsubsection{HTTP status codes}
+\begin{itemize}
+	\item 200: Anfrage erfolgreich
+	\item 404: Kein Fahrzeug gefunden
+\end{itemize}
+
+\subsubsection{Beispiel Request}
+GET \url{http://domain.com/api/v1/vehicles/636c81cc2361acd7}
+
+\subsubsection{Beispiel Response}
+\begin{lstlisting}
+[ {
+  "ref": "636c81cc2361acd7",
+  "routeId": 67,
+  "time": 1513596185100,
+  "position": {
+    "lng": 52.3453,
+    "lat": 13.53234
+  }
+} ]
+\end{lstlisting}
