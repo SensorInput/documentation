@@ -1,10 +1,10 @@
 \section{Überblick}
 \subsection{Analyse Datenbank BVG}
-Die BVG nutzt für die Persistierung der Daten, inklusive der Prozessdaten, ein Datenbanksystem der Firma Oracle. Es werden bei der BVG zwischen zwei verschiedenen Systemen unterschieden. Zum Einen gibt es die sogenannte SC05 Schnittstelle. Diese enthält Prozessdaten der aktuellen Betriebslage. Dazu zählen unter anderem Positionen von Bussen und deren Verspätung (vgl.: "`Die Prozessdatenschnittstelle (SC05) spiegelt die aktuelle Situation im RBL wider."'). % TODO
+Die BVG nutzt für die Persistierung der Daten, inklusive der Prozessdaten, ein Datenbanksystem der Firma Oracle. Es werden bei der BVG zwischen zwei verschiedenen Systemen unterschieden. Zum Einen gibt es die sogenannte SC05 Schnittstelle. Diese enthält Prozessdaten der aktuellen Betriebslage. Dazu zählen unter anderem Positionen von Bussen und deren Verspätung (vgl.: "`Die Prozessdatenschnittstelle (SC05) spiegelt die aktuelle Situation im RBL wider."' \cite[S. 4]{SC05}).
 Zum Anderen gibt es die SC51 Datenbank, entwickelt von der Firma Alcatel. Diese Schnittstelle enthält unterschiedlichste Daten für die Durchführung des öffentlichen Nahverkehrs der BVG. Darunter fallen Informationen zu Linien (Bus und Bahn), Informationen über deren Routen mittels geografischer Koordinaten und vieles mehr. 
 Für die Analyse dieser relationalen Datenbanken waren jeweils Dokumentationen und ein Dump der Datenbank zur Verfügung.
  
-Der erste Schritt bei der Analyse bestand darin, die Dumps der Oracle Datenbanken zu importieren, um anschließend Zugriff auf die Tabellen und deren Daten zu erlangen. Für den Import fiel die Entscheidung für das Tool "`OraDump to MySQL"'. % TODO https://www.convert-in.com/ord2sql.htm
+Der erste Schritt bei der Analyse bestand darin, die Dumps der Oracle Datenbanken zu importieren, um anschließend Zugriff auf die Tabellen und deren Daten zu erlangen. Für den Import fiel die Entscheidung für das Tool "`OraDump to MySQL"' (vgl. \cite{OraDump}).
 Mit diesem Tool ist es möglich ein Oracle Datenbank Dump in eine MySQL Datenbank zu importieren. Vorteil dieser Methode ist, das auf bestehende Kenntnisse im Umgang mit MySQL zurückgegriffen werden kann. Im folgenden wurde mittels der Schnittstellendokumentation die Struktur der Datenbank analysiert. Im Fokus dieser Analyse stehen die Routen Information aus der SC51 und die Positionsdaten der Fahrzeuge aus der SC05 Schnittstelle. Bei der Analyse haben sich folgende Datenbanktabellen als wertvoll gezeigt. 
  
 Die Tabelle \code{CM\_VEHICLE\_POSITION} aus der SC05 Datenbank enthält Informationen zu der aktuellen geografischen Position mittels Latitude und Longitude, der Abweichung vom Sollfahrplan in Sekunden, sowie eine Zuordnung zu einer Route. Um einen Omnibus auf einer Route einzuordnen, gibt es eine endliche Menge von geografischen Punkten. Zu all diesen Punkten ist ein zeitlicher und örtlicher Abstand bekannt (siehe SC51). Zu jedem Fahrzeug ist der letzte passierte Punkt der Route referenziert (\code{LAST\_POR\_ORDER}). Der prozentuale Abstand zum Folgepunkt auf einer Route ist ebenfalls in der Relation durch die Spalte \code{REL\_LNK\_DISTANCE} gegeben.
@@ -24,13 +24,11 @@ In der Abbildung \ref{img:db-bvg} sind die Zusammenhänge der einzelnen Datenbank
 	\label{img:db-bvg}
 \end{figure}
 
-\subsection{OSM}
+\subsection{Open Street Map}
 Wie kommt man an die Routen Infos zu den Bus-/Tram Linien. GeoJson.
 
 \section{Komponenten}
 Bestandteile des Systems beschreiben (Server, App, ...)
-
-\input{ApiReferenz.tex}
 
 \section{Datenbankschema Server}
 Für die Persistierung der Daten des Servers wurde eine relationale Datenbank gewählt. Speziell für die Implementierung wird eine MySQL Datenbank gewählt. Um auf die Datenbank aus Java zuzugreifen, wird der Java Database Connector (JDBC) verwendet.

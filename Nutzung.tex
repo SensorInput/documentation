@@ -1,29 +1,33 @@
 \section{Code}
 \subsection{Programmiersprache}
-Um die optimale Programmiersprache für das Projekt finden zu können, spielen mehrere Faktoren eine Rolle. Zum Einen muss die Zielplattform berücksichtig werden, aber auch die eigene Fähigkeit, mit der Sprache und den damit verbunden Bibliotheken umzugehen. Im Fall der Android Anwendung, ist Java die Programmiersprache der Wahl. Eine Alternative wäre hier beispielsweise Kotlin. Die Vorteile von Kotlin gegenüber Java überliegen klar, da Kotlin sicherer und moderner ist. % https://developer.android.com/kotlin/index.html
+Um die optimale Programmiersprache für das Projekt finden zu können, spielen mehrere Faktoren eine Rolle. Zum Einen muss die Zielplattform berücksichtig werden, aber auch die eigene Fähigkeit, mit der Sprache und den damit verbunden Bibliotheken umzugehen. Im Fall der Android Anwendung, ist Java die Programmiersprache der Wahl. Eine Alternative wäre hier beispielsweise Kotlin. Die Vorteile von Kotlin gegenüber Java überliegen klar, da Kotlin sicherer und moderner ist (vgl. \cite{kotlin}).
 Jedoch ist die eigene Erfahrung der Autoren in Java gegenüber Kotlin mehr vorhanden, was schlussendlich die Entscheidung beeinflusst hat.
 
-Für den Server ist die Wahl der Programmiersprachen deutlich umfangreicher. Die eigene einzige Vorgabe ist, das es sich bei dem Server um eine Rest API mit unterliegendem HTTP-Server handeln soll. Bei dem Server wird auf eine Mischung aus Java und Scala gesetzt. Auch hier spielt die Erfahrung eine entscheidende Rolle. Die Mischung aus Scala und Java funktioniert nur deshalb, da Scala Code zu Java Byte Code compiliert wird. Somit ist es möglich, Java Klassen und Methoden einschränkungsfrei in Scala zu nutzen. Die andere Richtung funktioniert nicht einschränkungsfrei. Aus diesem Grund sind die Modellklassen, die HTTP Handler und Datenbankklassen alle in Java geschrieben. Somit müssen keine Kompromisse zwischen Scala und Java gemacht werden. sämtliche Berechnungen sind in Scala implementiert. Der größte Vorteil von Scala, der auch die Entscheidung beeinflusst hat, ist die funktionale Programmierung, welches sich beim Auswerten von Liste und Arrays als hilfreiches Paradigma darstellt. % http://www.scala-lang.org
+Für den Server ist die Wahl der Programmiersprachen deutlich umfangreicher. Die eigene einzige Vorgabe ist, das es sich bei dem Server um eine Rest API mit unterliegendem HTTP-Server handeln soll. Bei dem Server wird auf eine Mischung aus Java und Scala gesetzt. Auch hier spielt die Erfahrung eine entscheidende Rolle. Die Mischung aus Scala und Java funktioniert nur deshalb, da Scala Code zu Java Byte Code compiliert wird. Somit ist es möglich, Java Klassen und Methoden einschränkungsfrei in Scala zu nutzen. Die andere Richtung funktioniert nicht einschränkungsfrei. Aus diesem Grund sind die Modellklassen, die HTTP Handler und Datenbankklassen alle in Java geschrieben. Somit müssen keine Kompromisse zwischen Scala und Java gemacht werden. sämtliche Berechnungen sind in Scala implementiert. Der größte Vorteil von Scala, der auch die Entscheidung beeinflusst hat, ist die funktionale Programmierung, welches sich beim Auswerten von Liste und Arrays als hilfreiches Paradigma darstellt (vgl. \cite{scala}).
 
 \subsection{Bibliotheken}
 % TODO Android Libs
 
-Da der Server eine Rest API implementieren soll, wird dafür ein entsprechendes Framework benötigt. Für die Programmiersprache Java gibt es zahlreiche Frameworks für die Umsetzung von Rest APIs. In diesem Projekt wurde sich für die Bibliothek Spark in Version 2.7.1 entschieden. %http://sparkjava.com
-Andere Frameworks wie Beispielsweise Spring WebMVC wären für dieses Projekt zu umfangreich gewesen.
-Spark ist ein einfaches Framework um Webservices zu erstellen (vgl. http://sparkjava.com). % TODO
-Im Hintergrund arbeitet für die HTTP Anfragen ein Jetty HTTP Server der Eclipse Foundation. 
+Da der Server eine Rest API implementieren soll, wird dafür ein entsprechendes Framework benötigt. Für die Programmiersprache Java gibt es zahlreiche Frameworks für die Umsetzung von Rest APIs. In diesem Projekt wurde sich für die Bibliothek Spark in Version 2.7.1 entschieden (vgl. \cite{spark}). Andere Frameworks wie Beispielsweise Spring WebMVC wären für dieses Projekt zu umfangreich gewesen.Spark ist ein einfaches Framework um Webservices zu erstellen (vgl. \cite{spark}). Im Hintergrund arbeitet für die HTTP Anfragen ein Jetty HTTP Server der Eclipse Foundation. 
 
 Datenbankanfragen werden in Java mittels der Schnittstelle JDBC gesendet. Als Datenbank kommt ein MySQL Server zum Einsatz. Dementsprechend wird die Bibliothek "`mysql-connector-java'' in der Version 6.0.5 verwendet. Auch wird bewusst auf eine ORM Bibliothek verzichtet, um maximale Kontrolle über die Datenbankstruktur und Abfragen zu haben.
 
 Als Übertragungsformat für den Payload in den HTTP Anfragen, wird JSON als Format gewählt. Für die serverseitige Verarbeitung wird die Bibliothek jackson und die Erweiterung geojson-jackson genutzt. Jackson ermöglicht es, JSON Daten direkt auf Java Objekte zu mappen. Dafür sind die Abhängigkeiten jackson-annotations und jackson-databind nötig. Jackson und die dazugehörigen Module werden in Version 2.9.2 verwendet.
 
 \section{Funktionsweise}
-Um die zeitlichen Abstand von zwei Fahrzeugen auf einer Route zu ermitteln, sind vorab mehrere Schritte notwendig. Grundlage der Berechnung sind die GPS Koordinaten der Fahrzeuge und der Routenverlauf. Zudem werden sogenannte Messfahrten (Journey genannt) auf der Route benötigt, um die zeitliche Entfernung näherungsweise zu bestimmten.
+Um den zeitlichen Abstand von zwei Fahrzeugen auf einer Route zu ermitteln, sind vorab mehrere Schritte notwendig. Grundlage der Berechnung sind die GPS Koordinaten der Fahrzeuge und der Routenverlauf. Zudem werden sogenannte Messfahrten (Journey genannt) auf der Route benötigt, um die zeitliche Entfernung näherungsweise zu bestimmen.
  
 Als erstes müssen alle Fahrzeuge, die auf der gleichen Route fahren, aus der Datenbank ermittelt werden. Bei den GPS Daten zu den einzelnen Fahrzeugen handelt es sich um bereits bearbeitete GPS Koordinaten. Die Koordinaten werden vorab im PUT Request (\ref{sub:vehicle:put}) bearbeitet, das heißt die ungenaue Position des Handys wird auf den dichtesten Punkt der Route verschoben. Mit diesen Koordinaten wird anschließend für jedes Fahrzeug die Entfernung zum Startpunkt der Route berechnet.
 
-Für die Berechnung der Entfernung zwischen zwei Koordinaten auf der Route (LineString), wird jeweils den Abstand zwischen zwei Punkten des LineStrings ermittelt und aufsummiert. Für diese Berechnung wird die Haversine Formel verwendet. % TODO Quelle + Recherche https://www.htmlgoodies.com/beyond/javascript/calculate-the-distance-between-two-points-in-your-web-apps.html
-Dieses Verfahren ist nötig, da die zwei Punkte mit der Route im seltensten Fall eine Gerade bilden (siehe Abbildung \ref{img:route}). Als nächstes wird der Abstand zwischen den Fahrzeugen in Metern bestimmt. Für diese Berechnung wird ein Fahrzeug ausgewählt (siehe \ref{sub:vehicle:list}), woraufhin die Entfernungen zu den anderen Fahrzeugen ermittelt wird.
+Für die Berechnung der Entfernung zwischen zwei Koordinaten auf der Route (LineString), wird jeweils den Abstand zwischen zwei Punkten des LineStrings ermittelt und aufsummiert. Für diese Berechnung wird die Haversine Formel verwendet. Die Methode zum Berechnen nach der Haversine Formel ist in Scala implementiert (Grundlage der Implementierung ist die Java Methode vgl. \cite{haversine}). Bei der Berechnung von Entfernungen auf der Erde besteht der Problem, das die Erde keine flache Ebene ist, sondern ein Geoid. Die Haversine Formel berücksichtig bei der Berechnung diesen Fakt in Ansätzen, jedoch unter der Annahme, das die Erde eine Kugel ist. Dementsprechend findet man in der Formel eine Konstante für den Erdradius wieder. Die Formel \ref{eqn:haversine} demonstriert, wie der Abstand zwischen zwei Punkten $x$ und $y$ in Kilometern berechnet werden kann.
+
+\begin{align}
+    a &= (sin(\Delta{lat}/2))^2 + cos(lat_1) * cos(lat_2) * (sin(\Delta{lng}/2))^2\\
+    c &= 2 * atan2( sqrt(a), sqrt(1-a) )\\
+    distance &= 6367[km] * c \label{eqn:haversine}
+\end{align}
+
+Dieses Verfahren ist nötig, da die zwei Punkte mit der Route im seltensten Fall eine Gerade bilden (siehe Abbildung \ref{img:route}). Somit muss für die Berechnung der Entfernung zwischen zwei Punkten immer die Route als Hilfsmittel verwendet werden. Als nächstes wird der Abstand zwischen den Fahrzeugen in Metern bestimmt. Für diese Berechnung wird ein Fahrzeug ausgewählt (siehe \ref{sub:vehicle:list}), woraufhin die Entfernungen zu den anderen Fahrzeugen ermittelt wird.
  
 Der letzte Schritt ist die Berechnung des zeitlichen Abstandes. Hierfür sind die Messfahrten notwendig. Bei einer Messfahrt wird im Vorfeld die komplette Route abgefahren und zu regelmäßigen Zeitpunkten die GPS Position gemessen. Diese Position wird zusammen mit der Uhrzeit in der Datenbank persistiert. Somit ist es möglich zu bestimmen, wie lange ein Fahrzeug von Position A zu Position B braucht. Im besten Fall existieren mehrere Messfahrten zu einer Route, damit die Aussage genauer wird.
 Um nun die zeitliche Entfernung von Fahrzeug A zu Fahrzeug B zu ermitteln, wird der dichteste Punkt von einer Messfahrt zum Fahrzeug A ermittelt. Das gleiche Prinzip wird auf das Fahrzeug B angewandt. Anschließend wird die Zeitdifferenz gebildet. Dieses Verfahren wird iterativ für jede Messfahrt durchgeführt. Abschließend wird der Mittelwert aller Zeitdifferenzen ermittelt.
@@ -36,3 +40,18 @@ Um nun die zeitliche Entfernung von Fahrzeug A zu Fahrzeug B zu ermitteln, wird 
 \end{figure}
 
 \section{Deployment / Runtime}
+Bei dem entwickelten System, handelt es sich um ein verteiltes System, mit unterschiedlichen Zielplattformen. Für den Client ist das gewählte System Android. Für das Deployment werden Standardtools aus der Androidentwicklung gewählt. Für das erstellen einer APK wird gradle benötigt. Um die fertige APK auf einem Android Mobiltelefon zu installieren können beispielsweise die ADB tools verwendet werden. Als Entwicklungsumgebung wird Android Studio von der Firma Google verwendet.
+
+Um die Android App auf einem Smartphone zu verwenden, muss dieses einige Voraussetzungen erfüllen. Die App setzt eine konstante Internetverbindung für die Kommunikation mit der Server voraus. Des Weiteren benötigt die Anwendung Zugriff auf das GPS Modul. Als Android Version wird das API Level 22 vorausgesetzt (getestet mit API Version 22 und höher). Im aktuellen Entwicklungstand wird für die Kartenansicht ein eigener Google Maps API Key vorausgesetzt.\footnote{vgl.: BusbunchingFahrer/Busbunching/app/src/debug/res/values/google\_maps\_api.xml}
+
+Die Serverkomponente des Systems ist ein maven Projekt, da auf Java zurück gegriffen wird. In maven besteht die Möglichkeit Scala zu integrieren, so auch in diesem Projekt. Um ein Executable Jar Archive zu erstellen, wird das JDK 1.8 oder neuer (getestet mit JDK 1.8.0\_144) und maven (empfohlen Version 3.5.2) benötigt. Für die Laufzeit wird lediglich das Java JRE 8 vorausgesetzt.
+
+Der Server benötigt für die Persistierung der Daten eine MySQL Datenbank. Zur Einrichtung der Datenbank gibt es eine Konfigurationsdatei. Das Listing \ref{lst:config} zeigt eine Beispiel Konfigurationsdatei. Als Betriebsystem für die Ausführung gibt es keine Einschränkungen (getestet Linux Debian 8). Der Server benötigt Zugriff auf TCP Port 4545, um Anfragen zu bearbeiten. Während der Projektlaufzeit läuft eine Serverinstanz auf einem Server der HTW-Berlin mit der Adresse \url{http://bus.f4.htw-berlin.de:4545}.
+
+\begin{lstlisting} [caption={Server Konfigurationsdatei},label=lst:config]
+db_host=localhost
+db_database=bvg
+db_username=root
+db_password=password
+db_port=3306
+\end{lstlisting}

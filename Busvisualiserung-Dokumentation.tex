@@ -1,5 +1,5 @@
-\documentclass[11pt,oneside,a4paper]{scrreprt}
-\usepackage[a4paper, top=20mm, bottom=26mm, left=35mm, right=25mm]{geometry}
+\documentclass[11pt,oneside,a4paper]{report}
+\usepackage[a4paper, top=20mm, bottom=26mm, left=30mm, right=30mm]{geometry}
 
 \usepackage[ngerman]{babel}
 \usepackage[latin1]{inputenc}
@@ -15,6 +15,7 @@
 \usepackage{subfigure} 
 \usepackage{tikz}
 \usepackage{acronym}
+\usepackage{ucs}
 
 \usepackage[hyphens]{url}
 \usepackage{xcolor}
@@ -27,6 +28,11 @@
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+\usepackage{titlesec}
+\titleformat{\chapter}
+  {\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
 %Listing
 \lstdefinelanguage{JavaScript}{
@@ -114,14 +120,13 @@
 \chapter*{Abkürzungsverzeichnis}
 \addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
 \begin{acronym}[JDBC]
+	\acro{ADB}{Android Debug Bridge}
 	\acro{BVG}{Berliner Verkehrsbetriebe}
 	\acro{JDBC}{Java Database Connector}
 	\acro{ORM}{Object Relational Mapping}
 	\acro{OSM}{Open Street Map}
 	\acro{RBL}{rechnerbasiertes Leitsystem}
 \end{acronym}
-
-\newpage
 
 \chapter*{Glossar}	
 \addcontentsline{toc}{chapter}{Glossar}
@@ -152,7 +157,23 @@ Aus der Problemstellung von Abschnitt \ref{sec:problem} ergeben sich für das Pro
 
 
 \chapter{Vorschläge / Ausblick}
+Test
 
-\chapter{Literaturverzeichnis}
+\clearpage
+
+\chapter*{Anhang}
+\addcontentsline{toc}{chapter}{Anhang}
+\normalsize
+\renewcommand\thesection{\Alph{section}}
+
+\input{ApiReferenz.tex}
+\clearpage
+
+\section{Quellenverzeichnis}
+\begingroup
+	\def\chapter*#1{}
+	\bibliography{Quellen}
+\endgroup
+\bibliographystyle{unsrtdin}
 
 \end{document}
