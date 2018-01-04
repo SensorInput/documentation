@@ -6,8 +6,20 @@ Jedoch ist die eigene Erfahrung der Autoren in Java gegenüber Kotlin mehr vorhan
 Für den Server ist die Wahl der Programmiersprachen deutlich umfangreicher. Die eigene einzige Vorgabe ist, das es sich bei dem Server um eine Rest API mit unterliegendem HTTP-Server handeln soll. Bei dem Server wird auf eine Mischung aus Java und Scala gesetzt. Auch hier spielt die Erfahrung eine entscheidende Rolle. Die Mischung aus Scala und Java funktioniert nur deshalb, da Scala Code zu Java Byte Code compiliert wird. Somit ist es möglich, Java Klassen und Methoden einschränkungsfrei in Scala zu nutzen. Die andere Richtung funktioniert nicht einschränkungsfrei. Aus diesem Grund sind die Modellklassen, die HTTP Handler und Datenbankklassen alle in Java geschrieben. Somit müssen keine Kompromisse zwischen Scala und Java gemacht werden. sämtliche Berechnungen sind in Scala implementiert. Der größte Vorteil von Scala, der auch die Entscheidung beeinflusst hat, ist die funktionale Programmierung, welches sich beim Auswerten von Liste und Arrays als hilfreiches Paradigma darstellt (vgl. \cite{scala}).
 
 \subsection{Bibliotheken}
-% TODO Android Libs
 
+\subsubsection{Gson}
+Gson ist eine Java Bibliothek  mithilfe derer man Java Objekte leicht in JSON Objekte konvertieren kann und umgekehrt. So erspart man sich viel Zeit die Java Objekte per Hand zu mappen. Eine Alternative zu dieser Bibliothek wäre Jackson gewesen. Ein großer Vorteil von Jackson ist es, nicht-JSON Formate Dekodieren kann was jedoch bei diesem Projekt nicht von Nöten gewesen ist. Aufgrund der größeren Erfahrung wurde Gson verwendet.
+
+\subsubsection{Google Maps API}
+Da aus Übersichtsgründen eine Karte benötigt wurde die Google Maps API verwendet. Jedoch standen einige Alternativen zur Verfügung, wie zum Beispiel OpenStreetMaps oder auch MapQuest. Obwohl die Auswahl recht groß war, fiel die Wahl auf die Google Maps API, da sie eine sehr ausführliche und leicht verständliche Dokumentation besitzt. Darüber hinaus unterstützt Android Studios die API, beispielsweise bei der Erstellung einer Activity. Dort hat existiert die Option, direkt eine Map Activity samt Karten-layout und Beispiel Code zu generieren. Auch die Implementierung von GeoJSON wurde durch Google Maps unterstützt.
+
+\subsubsection{GeoJson}
+GeoJSON ist eine erweiterte Form des JSON-Formates, dass geografische Daten auf Karten wie OpenStreetMaps oder Google Maps repräsentieren kann. Mithilfe vom GeoJSON konnten Bus und Tram Strecken gut und Nachvollziehbar auf der Karte angezeigt werden. Die Entscheidung GeoJSON zu verwenden wurde deshalb getroffen, weil auch hier wieder eine von Android gut formulierte Dokumentation und dieses Format Google Maps unterstützt. %Todo(https://www.nextome.net/show-geojson-layer-google-mapsosmmapbox-android-sdk/)
+
+\subsubsection{Asynchronous http client for Android by James Smith}
+Dieser Asynchrone "`callback-based'' http client für Android ermöglicht es schnell und einfach Anfragen zum Server zu schicken bzw. Antworten vom Server zu erhalten. Dies ersparte eine Menge Zeit und Mühe selber passende Funktionen zu schreiben und darüber hinaus wird diese Bibliothek auch von großen Apps wie Instagram oder Heyzep verwendet. %Todo(http://loopj.com)
+
+\subsubsection{Server}
 Da der Server eine Rest API implementieren soll, wird dafür ein entsprechendes Framework benötigt. Für die Programmiersprache Java gibt es zahlreiche Frameworks für die Umsetzung von Rest APIs. In diesem Projekt wurde sich für die Bibliothek Spark in Version 2.7.1 entschieden (vgl. \cite{spark}). Andere Frameworks wie Beispielsweise Spring WebMVC wären für dieses Projekt zu umfangreich gewesen.Spark ist ein einfaches Framework um Webservices zu erstellen (vgl. \cite{spark}). Im Hintergrund arbeitet für die HTTP Anfragen ein Jetty HTTP Server der Eclipse Foundation. 
 
 Datenbankanfragen werden in Java mittels der Schnittstelle JDBC gesendet. Als Datenbank kommt ein MySQL Server zum Einsatz. Dementsprechend wird die Bibliothek "`mysql-connector-java'' in der Version 6.0.5 verwendet. Auch wird bewusst auf eine ORM Bibliothek verzichtet, um maximale Kontrolle über die Datenbankstruktur und Abfragen zu haben.
