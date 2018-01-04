@@ -1,1 +1,7 @@
-Problemstellung Busbunching, BVG, Ist-Zustand, Ziel
+Ziel des Projektes ist es ein System zu entwerfen um Bus bunching (Pulkbildung) im öffentlichen Nahverkehr, genauer bei den Bussen der Berliner Verkehrsbetrieben, zu verhindern.
+
+Bus bunching ist ein Phänomen im öffentlichen Personennahverkehr bei dem es durch Beeinträchtigungen im Verkehrsfluss zu einer zusammenhängenden Fahrzeugreihe kommt. Daraus resultieren starke Schwankungen in den Folgezeiten der Busse einer Linie welche wiederum eine unregelmäßige Belastung der Fahrzeuge mit Fahrgästen nach sich zieht.
+
+Die hier angestrebt Lösung besteht darin, jedem Busfahrer eine Android Applikation zur verfügung zu stellen, auf der der relative Zeitabstand zu Bussen direkt vor und hinter ihm visualisiert wird. Der eigene Bus wird durch eine Fahrtennummer im Vorfeld festgelegt. Der Fahrer kann, entsprechend der angezeigten Informationen, sein Fahrverhalten so anpassen das der Takt zwischen den Fahrzeugen den Vorgaben der Leitzentrale entspricht. Er kann beispielsweise, wenn der Bus vor ihm durch eine Beeinträchtigung auf der Strecke verspätet an einer Haltestelle ankommt und sich somit der relative Zeitabstand verringert, langsamer fahren oder an der nächsten Haltestelle so lange warten bis der Zeitabstand wieder der Strecken Taktung entspricht.
+
+Grundlage des Systems ist das Senden der Koordinaten jedes Buses aus der App heraus. Diese Koordinaten und die Fahrtdauer zwischen den Koordinaten werden in einer Datenbank gespeichert. Aus der Menge der Datensätze einer Route ist es möglich durchschnittliche Fahrzeiten für die Route zu unterschiedlichen Tageszeiten zu berechnen. Diese Berechnungen erlauben eine Vorhersage der relativen zeitlichen Distanz zwischen zwei Bussen einer Linie zu berechnen.

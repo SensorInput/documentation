@@ -1,4 +1,4 @@
-\section{Überblick}
+\section{Grundlagen}
 \subsection{Analyse Datenbank BVG}
 Die BVG nutzt für die Persistierung der Daten, inklusive der Prozessdaten, ein Datenbanksystem der Firma Oracle. Es werden bei der BVG zwischen zwei verschiedenen Systemen unterschieden. Zum Einen gibt es die sogenannte SC05 Schnittstelle. Diese enthält Prozessdaten der aktuellen Betriebslage. Dazu zählen unter anderem Positionen von Bussen und deren Verspätung (vgl.: "`Die Prozessdatenschnittstelle (SC05) spiegelt die aktuelle Situation im RBL wider."' \cite[S. 4]{SC05}).
 Zum Anderen gibt es die SC51 Datenbank, entwickelt von der Firma Alcatel. Diese Schnittstelle enthält unterschiedlichste Daten für die Durchführung des öffentlichen Nahverkehrs der BVG. Darunter fallen Informationen zu Linien (Bus und Bahn), Informationen über deren Routen mittels geografischer Koordinaten und vieles mehr. 
@@ -25,7 +25,78 @@ In der Abbildung \ref{img:db-bvg} sind die Zusammenhänge der einzelnen Datenbank
 \end{figure}
 
 \subsection{Open Street Map}
-Wie kommt man an die Routen Infos zu den Bus-/Tram Linien. GeoJson.
+OpenStreetMap ist ein freies Projekt unter der Open Database License welches Geodaten sammelt und zur freien Nutzung in einer Datenbank speichert (vgl.: \cite{osm}). Das Projekt wurde im Juli 2004 ins Leben gerufen. Seit April 2006 ist ein Gremium, die OpenStreetMap Foundation, für das Projekt verantwortlich. Ziel ist das "`Erzeugen, Verteilen und Vergrößern eines geographischen Datenbestandes sowie dessen freie Bereitstellung zum allgemeinen Gebrauch?" (vgl.: \cite{osm-was}).
+
+Der Zugang zu den Daten erfolgt über die OSM API. Zum Zeitpunkt des Erstellen dieses Dokumentes in der Version 0.6 (vgl.: \cite{osm-api-6}). Eine Ausführliche Dokumentation wird auf openstreetmap.org zur Verfügung gestellt (vgl.: \cite{osm-wiki}). Jedem auf OSM gespeichertem Objekt wird eine Basiseigenschaft (Attribut) zugeordnet welche wiederum durch eine festgelegte Datenrepräsentation ausgedrückt wird. Die Liste der Attribute (Map Features) findet sich auf (vgl.: \cite{osm-feature}).
+
+Für dieses Projekt ist insbesondere das Map Feature "`Route" von interesse (vgl.: \cite{osm-route}). Die spezifikation für bestimmte Routen erfolgt über eine Sammlung von Key/Value paaren. So sind Busrouten der Berliner Verkehrsbetriebe Relationen mit folgenden Eigenschaften:
+\begin{lstlisting}
+["type"="route"]["route"="bus"]["operator"="Berliner Verkehrsbetriebe"]. 
+\end{lstlisting}
+Für das Suchen, Anzeigen und downloaden von bestimmten Relationen empfehlen wir Overpass turbo (vgl.: \cite{overpass}), ein webbasiertes Datensammelwerkzeug für OSM. Overpass turbo zeigt Resultate einer Anfrage auf einer interaktiven Karte und erlaubt den Download der Daten in unterschiedlichen Formaten. In diesem Projekt wurde GeoJSON benutzt (siehe \ref{sec:geojson}). Eine Ausführliche Beschreibung der Overpass API findet sich unter (vgl.: \cite{osm-overpass}).
+
+\begin{lstlisting}[caption=Overpass Query für alle Busrouten der Berliner Verkehrsbetriebe]
+[out:json][timeout:25];
+(
+  // query part 
+  relation["type"="route"]["route"="bus"]["operator"="Berliner Verkehrsbetriebe"];
+);
+// print results
+out body;
+>;
+out skel qt;
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Overpass Query für die Straßenbahnroute der Linie 67 der Berliner Verkehrsbetriebe]
+[out:json][timeout:25];
+// gather results
+(
+  // query part for: ?type=route and route=bus?
+  relation["type"="route"]["route"="tram"]["ref"=67]["operator"="Berliner Verkehrsbetriebe"];
+);
+// print results
+out body;
+>;
+out skel qt;
+\end{lstlisting}
+
+\subsection{GeoJson} \label{sec:geojson}
+Die Daten zu den Buslinien wurden über die OSM API im GeoJSON Format gedownloadet.
+GeoJSON ist ein offenes Format um geographische Daten zu repräsentieren. Es basiert auf JSON, der JavaScript Object Notation, und wurde im August 2016 als RFC 7946 veröffentlicht (vlg.: \cite{geojson}) . GeoJSON erlaubt folgende geometrische Typen:
+\begin{itemize}
+    \item{Point: definiert durch Coordinaten (Lat, Long). Beschreiben beispielsweise Adressen}
+    \item{LineString: Sammlung von Punkten welche verbunden beispielsweise Straßen und Flüsse repräsentieren
+    Polygon: mehrere miteinander verbundene Punkte wobei der erste und letzte Punkt identisch sind. Beschreiben z.B. Ländergrenzen}
+    \item{MultiPoint: mehrere nicht verbundene Punkte}
+    \item{MultiLineString: bestehen aus 1 bis n LineStrings. Werden benutzt wenn zu einer Relation mehrere LineStrings existieren die dieser zugeordnet sind. z.B. unterschiedliche Fahrtstrecken für eine Buslinie.}
+    \item{MultiPolygon: zur Darstellung von komplexen Flächen benützt zB bei geographisch getrennt liegenden Flächenstücken welche einer Relation angehören.}
+\end{itemize}
+
+Die in diesem Projekt benutzte Daten zum repräsentieren der Routen bestehen aus MultiLineStrings. Ein GeoJSON hat ein eltern Objekt welches üblicherweiser ein collection Objekt ist. Listing \ref{listing:geosjon}  ist ein verkürztes Beispiel der Daten für die Straßenbahn Linie 27. Der Ausschnitt zeigt ein feature Objekt des eltern Objektes (FeatureCollection). Das Feature besitzt mehrere properties (Eigenschaften) und eine Geometry. Diese ist ein MutliLineString, also eine Sammlung von Punkten welche verbunden die Route der Tramlinie 27 repräsentieren.
+
+\begin{lstlisting}[caption=Beispiel Relation Route 27, label=listing:geosjon]
+{ "type": "Feature",
+      "properties": {
+        "@id": "relation/2077646",
+        "from": "Krankenhaus Köpenick",
+        "name": "Straßenbahnlinie 27: Krankenhaus Köpenick => Weißensee, Pasedagplatz",
+        "network": "Verkehrsverbund Berlin-Brandenburg",
+        "operator": "Berliner Verkehrsbetriebe",
+        "ref": "27",
+        "route": "tram",
+        "to": "Weißensee, Pasedagplatz",
+        "type": "route"
+      },
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [13.5939995, 52.4385062], ..., [13.5921062, 52.4388869]
+          ]
+        ]
+      }
+}
+\end{lstlisting}
 
 \section{Komponenten}
 Bestandteile des Systems beschreiben (Server, App, ...)
