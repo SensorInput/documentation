@@ -8,13 +8,13 @@ Für den Server ist die Wahl der Programmiersprachen deutlich umfangreicher. Die 
 \subsection{Bibliotheken}
 
 \subsubsection{Gson}
-Gson ist eine Java Bibliothek  mithilfe derer man Java Objekte leicht in JSON Objekte konvertieren kann und umgekehrt. So erspart man sich viel Zeit die Java Objekte per Hand zu mappen. Eine Alternative zu dieser Bibliothek wäre Jackson gewesen. Ein großer Vorteil von Jackson ist es, nicht-JSON Formate Dekodieren kann was jedoch bei diesem Projekt nicht von Nöten gewesen ist. Aufgrund der größeren Erfahrung wurde Gson verwendet.
+Gson ist eine Java Bibliothek  mithilfe derer man Java Objekte leicht in JSON Objekte konvertieren kann und umgekehrt. So erspart man sich viel Zeit die Java Objekte per Hand zu mappen. Eine Alternative zu dieser Bibliothek wäre Jackson gewesen. Ein großer Vorteil von Jackson ist es, nicht-JSON Formate dekodieren zu können, was jedoch bei diesem Projekt nicht von Nöten ist. Aufgrund der größeren Erfahrung wurde Gson verwendet.
 
 \subsubsection{Google Maps API}
-Da aus Übersichtsgründen eine Karte benötigt wurde die Google Maps API verwendet. Jedoch standen einige Alternativen zur Verfügung, wie zum Beispiel OpenStreetMaps oder auch MapQuest. Obwohl die Auswahl recht groß war, fiel die Wahl auf die Google Maps API, da sie eine sehr ausführliche und leicht verständliche Dokumentation besitzt. Darüber hinaus unterstützt Android Studios die API, beispielsweise bei der Erstellung einer Activity. Dort hat existiert die Option, direkt eine Map Activity samt Karten-layout und Beispiel Code zu generieren. Auch die Implementierung von GeoJSON wurde durch Google Maps unterstützt.
+Da aus Übersichtsgründen eine Karte benötigt wird, wird die Google Maps API verwendet. Jedoch standen einige Alternativen zur Verfügung, wie zum Beispiel OpenStreetMaps oder auch MapQuest. Obwohl die Auswahl recht groß ist, fiel die Wahl auf die Google Maps API, da sie eine sehr ausführliche und leicht verständliche Dokumentation besitzt. Darüber hinaus bietet Android Studio eine gute Integration der Google Maps API. Auch die Implementierung von GeoJSON wird durch Google Maps unterstützt.
 
 \subsubsection{GeoJson}
-GeoJSON ist eine erweiterte Form des JSON-Formates, dass geografische Daten auf Karten wie OpenStreetMaps oder Google Maps repräsentieren kann. Mithilfe vom GeoJSON konnten Bus und Tram Strecken gut und Nachvollziehbar auf der Karte angezeigt werden. Die Entscheidung GeoJSON zu verwenden wurde deshalb getroffen, weil auch hier wieder eine von Android gut formulierte Dokumentation und dieses Format Google Maps unterstützt. %Todo(https://www.nextome.net/show-geojson-layer-google-mapsosmmapbox-android-sdk/)
+GeoJSON ist eine erweiterte Form des JSON-Formates, dass geografische Daten auf Karten wie OpenStreetMaps oder Google Maps repräsentieren kann. Mithilfe vom GeoJSON können Bus und Tram Strecken gut und nachvollziehbar auf der Karte angezeigt werden. Die Entscheidung GeoJSON zu verwenden wurde deshalb getroffen, weil auch hier wieder eine von Android gut formulierte Dokumentation und dieses Format Google Maps unterstützt (vgl.: \cite{android-geojson}).
 
 \subsubsection{Asynchronous http client for Android by James Smith}
 Dieser Asynchrone "`callback-based'' http client für Android ermöglicht es schnell und einfach Anfragen zum Server zu schicken bzw. Antworten vom Server zu erhalten. Dies ersparte eine Menge Zeit und Mühe selber passende Funktionen zu schreiben und darüber hinaus wird diese Bibliothek auch von großen Apps wie Instagram oder Heyzep verwendet. %Todo(http://loopj.com)
@@ -26,7 +26,7 @@ Datenbankanfragen werden in Java mittels der Schnittstelle JDBC gesendet. Als Da
 
 Als Übertragungsformat für den Payload in den HTTP Anfragen, wird JSON als Format gewählt. Für die serverseitige Verarbeitung wird die Bibliothek jackson und die Erweiterung geojson-jackson genutzt. Jackson ermöglicht es, JSON Daten direkt auf Java Objekte zu mappen. Dafür sind die Abhängigkeiten jackson-annotations und jackson-databind nötig. Jackson und die dazugehörigen Module werden in Version 2.9.2 verwendet.
 
-\section{Funktionsweise}
+\section{Funktionsweise}\label{sec:funktionsweise}
 Um den zeitlichen Abstand von zwei Fahrzeugen auf einer Route zu ermitteln, sind vorab mehrere Schritte notwendig. Grundlage der Berechnung sind die GPS Koordinaten der Fahrzeuge und der Routenverlauf. Zudem werden sogenannte Messfahrten (Journey genannt) auf der Route benötigt, um die zeitliche Entfernung näherungsweise zu bestimmen.
  
 Als erstes müssen alle Fahrzeuge, die auf der gleichen Route fahren, aus der Datenbank ermittelt werden. Bei den GPS Daten zu den einzelnen Fahrzeugen handelt es sich um bereits bearbeitete GPS Koordinaten. Die Koordinaten werden vorab im PUT Request (\ref{sub:vehicle:put}) bearbeitet, das heißt die ungenaue Position des Handys wird auf den dichtesten Punkt der Route verschoben. Mit diesen Koordinaten wird anschließend für jedes Fahrzeug die Entfernung zum Startpunkt der Route berechnet.
